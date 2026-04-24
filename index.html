@@ -55,6 +55,53 @@
             mask-image: radial-gradient(circle at 30% 12%, rgba(0, 0, 0, 0.95) 0%, transparent 62%);
             z-index: 0;
         }
+        body::after {
+            content: "";
+            position: fixed;
+            inset: -20%;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.22;
+            background:
+                conic-gradient(from 180deg at 40% 20%,
+                    rgba(100, 255, 218, 0.12),
+                    rgba(122, 167, 255, 0.10),
+                    rgba(100, 255, 218, 0.12));
+            filter: blur(34px);
+            transform: translateZ(0);
+            animation: driftGlow 16s ease-in-out infinite alternate;
+        }
+
+        .sparkles {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.55;
+            background:
+                radial-gradient(1px 1px at 12% 18%, rgba(239, 244, 255, 0.55), transparent 55%),
+                radial-gradient(1px 1px at 28% 42%, rgba(100, 255, 218, 0.55), transparent 55%),
+                radial-gradient(1px 1px at 46% 16%, rgba(239, 244, 255, 0.46), transparent 55%),
+                radial-gradient(1px 1px at 62% 34%, rgba(122, 167, 255, 0.55), transparent 55%),
+                radial-gradient(1px 1px at 78% 22%, rgba(239, 244, 255, 0.42), transparent 55%),
+                radial-gradient(1px 1px at 88% 46%, rgba(100, 255, 218, 0.42), transparent 55%),
+                radial-gradient(1px 1px at 18% 72%, rgba(122, 167, 255, 0.45), transparent 55%),
+                radial-gradient(1px 1px at 40% 86%, rgba(239, 244, 255, 0.40), transparent 55%),
+                radial-gradient(1px 1px at 64% 78%, rgba(100, 255, 218, 0.40), transparent 55%),
+                radial-gradient(1px 1px at 84% 84%, rgba(122, 167, 255, 0.40), transparent 55%);
+            mix-blend-mode: screen;
+            filter: blur(0.1px);
+            animation: twinkle 8s ease-in-out infinite;
+        }
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.38; transform: translate3d(0,0,0); }
+            50% { opacity: 0.62; transform: translate3d(0, -6px, 0); }
+        }
+
+        @keyframes driftGlow {
+            from { transform: translate3d(-2%, -1%, 0) scale(1); }
+            to   { transform: translate3d(2%, 1.5%, 0) scale(1.03); }
+        }
 
         a { color: inherit; }
         a:focus-visible, button:focus-visible {
@@ -108,6 +155,11 @@
             border-radius: 10px;
             background: linear-gradient(135deg, rgba(100, 255, 218, 0.9), rgba(122, 167, 255, 0.9));
             box-shadow: 0 12px 26px rgba(100, 255, 218, 0.12);
+            animation: logoPulse 2.8s ease-in-out infinite;
+        }
+        @keyframes logoPulse {
+            0%, 100% { transform: translateY(0) scale(1); filter: saturate(1); }
+            50% { transform: translateY(-1px) scale(1.03); filter: saturate(1.15); }
         }
         nav .logo span { color: var(--text); font-size: 1.05rem; }
 
@@ -145,6 +197,24 @@
 
         main { position: relative; }
         main { z-index: 1; }
+
+        .scanline {
+            position: fixed;
+            left: 0; right: 0;
+            top: var(--nav-h);
+            height: 2px;
+            background: linear-gradient(90deg, transparent, rgba(100, 255, 218, 0.45), transparent);
+            opacity: 0.25;
+            z-index: 1;
+            pointer-events: none;
+            animation: scan 5.6s linear infinite;
+        }
+        @keyframes scan {
+            0%   { transform: translateY(-10px); opacity: 0; }
+            12%  { opacity: 0.28; }
+            50%  { transform: translateY(calc(100vh - var(--nav-h) - 80px)); opacity: 0.18; }
+            100% { transform: translateY(calc(100vh - var(--nav-h) + 20px)); opacity: 0; }
+        }
 
         .section {
             position: relative;
@@ -193,6 +263,68 @@
             grid-template-columns: 1.25fr 0.75fr;
             align-items: center;
             gap: 26px;
+        }
+        .hero > div { position: relative; }
+        .hero-mark {
+            position: absolute;
+            left: -10px;
+            top: -22px;
+            font-weight: 850;
+            font-size: clamp(4.2rem, 8vw, 8.4rem);
+            letter-spacing: -2px;
+            line-height: 1;
+            opacity: 0.22;
+            user-select: none;
+            pointer-events: none;
+            background: linear-gradient(135deg, rgba(100, 255, 218, 0.75), rgba(122, 167, 255, 0.75));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            filter: drop-shadow(0 18px 42px rgba(0,0,0,0.35));
+            background-size: 200% 200%;
+            animation: markFlow 6.5s ease-in-out infinite;
+        }
+        .hero-mark-outline {
+            position: absolute;
+            left: -10px;
+            top: -22px;
+            font-weight: 900;
+            font-size: clamp(4.2rem, 8vw, 8.4rem);
+            letter-spacing: -2px;
+            line-height: 1;
+            opacity: 0.18;
+            user-select: none;
+            pointer-events: none;
+            color: transparent;
+            -webkit-text-stroke: 1px rgba(215, 225, 255, 0.35);
+            text-stroke: 1px rgba(215, 225, 255, 0.35);
+            transform: translate3d(6px, 8px, 0);
+            animation: markFloat 7.5s ease-in-out infinite;
+        }
+        @keyframes markFlow {
+            0%, 100% { background-position: 0% 50%; opacity: 0.22; }
+            50% { background-position: 100% 50%; opacity: 0.28; }
+        }
+        @keyframes markFloat {
+            0%, 100% { transform: translate3d(6px, 8px, 0); opacity: 0.16; }
+            50% { transform: translate3d(10px, 2px, 0); opacity: 0.22; }
+        }
+        .hero-glow {
+            position: absolute;
+            inset: -34px -20px auto -22px;
+            height: 240px;
+            border-radius: 28px;
+            background:
+                radial-gradient(180px 130px at 20% 30%, rgba(100, 255, 218, 0.18), transparent 60%),
+                radial-gradient(190px 140px at 62% 42%, rgba(122, 167, 255, 0.18), transparent 62%);
+            filter: blur(6px);
+            opacity: 0.9;
+            pointer-events: none;
+            animation: glowBreath 4.8s ease-in-out infinite;
+        }
+        @keyframes glowBreath {
+            0%, 100% { opacity: 0.75; transform: translate3d(0,0,0) scale(1); }
+            50% { opacity: 1; transform: translate3d(0,-6px,0) scale(1.03); }
         }
         .hero h4 {
             color: rgba(100, 255, 218, 0.92);
@@ -257,6 +389,53 @@
             color: var(--muted);
         }
 
+        .terminal-card {
+            margin-top: 14px;
+            max-width: 640px;
+            border-radius: var(--radius);
+            border: 1px solid rgba(148, 163, 184, 0.14);
+            background: rgba(7, 18, 37, 0.62);
+            box-shadow: 0 14px 40px rgba(0,0,0,0.28);
+            overflow: hidden;
+        }
+        .terminal-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 12px;
+            background: rgba(148, 163, 184, 0.08);
+            border-bottom: 1px solid rgba(148, 163, 184, 0.12);
+        }
+        .dots { display: inline-flex; gap: 6px; }
+        .dot { width: 10px; height: 10px; border-radius: 999px; background: rgba(148, 163, 184, 0.22); }
+        .dot.red { background: rgba(255, 99, 99, 0.7); }
+        .dot.yellow { background: rgba(255, 204, 102, 0.75); }
+        .dot.green { background: rgba(100, 255, 218, 0.55); }
+        .terminal-title {
+            color: var(--faint);
+            font-size: 0.85rem;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+        }
+        .terminal-body {
+            padding: 12px 14px 14px;
+            color: rgba(215, 225, 255, 0.74);
+            font-size: 0.9rem;
+            line-height: 1.7;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+        }
+        .prompt { color: rgba(100, 255, 218, 0.92); }
+        .cmd { color: rgba(239, 244, 255, 0.92); }
+        .cursor {
+            display: inline-block;
+            width: 9px;
+            height: 1.05em;
+            margin-left: 3px;
+            background: rgba(100, 255, 218, 0.75);
+            vertical-align: -2px;
+            animation: blink 1s steps(1) infinite;
+        }
+        @keyframes blink { 50% { opacity: 0; } }
+
         .btn {
             display: inline-flex;
             align-items: center;
@@ -308,7 +487,29 @@
             padding: 22px;
             position: relative;
             overflow: hidden;
+            animation: floatCard 6.6s ease-in-out infinite;
         }
+        @keyframes floatCard {
+            0%, 100% { transform: translate3d(0,0,0); }
+            50% { transform: translate3d(0,-8px,0); }
+        }
+        .profile-card:hover { animation-play-state: paused; }
+        .profile-card::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            border-radius: var(--radius);
+            background:
+                linear-gradient(120deg,
+                    transparent 0%,
+                    rgba(100, 255, 218, 0.10) 35%,
+                    rgba(122, 167, 255, 0.10) 65%,
+                    transparent 100%);
+            opacity: 0;
+            transition: opacity 0.18s ease;
+        }
+        .profile-card:hover::after { opacity: 1; }
         .profile-card::before {
             content: "";
             position: absolute;
@@ -325,6 +526,52 @@
             align-items: center;
             gap: 14px;
             margin-bottom: 16px;
+        }
+        .avatar-shell {
+            position: relative;
+            flex: 0 0 auto;
+            border-radius: 34px;
+            padding: 0;
+        }
+        .avatar-shell::before {
+            content: "";
+            position: absolute;
+            inset: -12px;
+            border-radius: 38px;
+            border: 1px solid rgba(148, 163, 184, 0.18);
+            opacity: 0.7;
+            pointer-events: none;
+        }
+        .avatar-shell::after {
+            content: "";
+            position: absolute;
+            inset: -22px;
+            border-radius: 46px;
+            border: 1px dashed rgba(100, 255, 218, 0.35);
+            opacity: 0.65;
+            pointer-events: none;
+            animation: orbit 10.5s linear infinite;
+        }
+        .avatar-orb {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            border-radius: 999px;
+            background: rgba(100, 255, 218, 0.85);
+            box-shadow: 0 0 0 6px rgba(100, 255, 218, 0.10), 0 18px 42px rgba(0,0,0,0.35);
+            top: -22px;
+            left: 50%;
+            transform: translateX(-50%);
+            animation: orbitDot 10.5s linear infinite;
+            pointer-events: none;
+        }
+        @keyframes orbit {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        @keyframes orbitDot {
+            from { transform: translateX(-50%) rotate(0deg) translateX(72px) rotate(0deg); }
+            to { transform: translateX(-50%) rotate(360deg) translateX(72px) rotate(-360deg); }
         }
         .avatar {
             width: 104px;
@@ -405,6 +652,7 @@
             box-shadow: 0 10px 24px rgba(0,0,0,0.18);
         }
         .skill-card:hover { border-color: rgba(100, 255, 218, 0.40); transform: translateY(-4px); background: rgba(17, 34, 64, 0.80); }
+        .skill-card:hover { box-shadow: 0 18px 44px rgba(0,0,0,0.34), 0 10px 26px rgba(100, 255, 218, 0.08); }
         .skill-card h3 { color: rgba(100, 255, 218, 0.92); margin-bottom: 12px; font-size: 1.05rem; letter-spacing: 0.2px; }
         .skill-card ul { list-style: none; color: var(--muted); display: grid; gap: 8px; }
         .skill-card ul li { display: flex; align-items: flex-start; gap: 10px; }
@@ -437,7 +685,24 @@
             box-shadow: 0 10px 26px rgba(0,0,0,0.20);
             transition: transform 0.18s ease, border-color 0.18s ease;
         }
-        .project-card:hover { transform: translateY(-4px); border-color: rgba(122, 167, 255, 0.32); }
+        .project-card::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            border-radius: var(--radius);
+            pointer-events: none;
+            opacity: 0.22;
+            background:
+                linear-gradient(90deg, rgba(148, 163, 184, 0.10) 1px, transparent 1px),
+                linear-gradient(rgba(148, 163, 184, 0.08) 1px, transparent 1px);
+            background-size: 28px 28px;
+            mask-image: radial-gradient(circle at 14% 18%, rgba(0,0,0,0.92) 0%, transparent 62%);
+        }
+        .project-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(122, 167, 255, 0.36);
+            box-shadow: 0 18px 44px rgba(0,0,0,0.32), 0 10px 28px rgba(122, 167, 255, 0.08);
+        }
         .project-card h3 { color: #eff4ff; font-size: 1.25rem; margin-bottom: 10px; letter-spacing: -0.2px; }
         .project-card p { color: var(--muted); margin-bottom: 14px; }
         .tech-stack {
@@ -474,6 +739,7 @@
             .profile-card { order: 3; }
             .section-title::after { display: none; }
             .highlights { grid-template-columns: 1fr; }
+            .hero-mark, .hero-mark-outline { display: none; }
         }
 
         @media (max-width: 560px) {
@@ -487,12 +753,21 @@
             html { scroll-behavior: auto; }
             .fade-in { animation: none; }
             .btn, nav a, .skill-card, .project-card { transition: none; }
+            body::after { animation: none; }
+            .scanline { animation: none; display: none; }
+            .cursor { animation: none; }
+            .sparkles { animation: none; }
+            .avatar-shell::after, .avatar-orb { animation: none; }
+            .logo-mark { animation: none; }
+            .hero-mark, .hero-mark-outline, .hero-glow, .profile-card { animation: none; }
         }
     </style>
 </head>
 <body>
 
     <a class="skip-link" href="#main">跳到主要内容</a>
+    <div class="sparkles" aria-hidden="true"></div>
+    <div class="scanline" aria-hidden="true"></div>
     <nav>
         <div class="logo">
             <div class="logo-mark" aria-hidden="true"></div>
@@ -509,6 +784,9 @@
     <main id="main">
         <section class="container hero fade-in section" aria-label="主页介绍">
             <div>
+                <div class="hero-mark-outline" aria-hidden="true">HY</div>
+                <div class="hero-mark" aria-hidden="true">HY</div>
+                <div class="hero-glow" aria-hidden="true"></div>
                 <div class="kicker">你好，我是</div>
                 <h1>韩雨</h1>
                 <h2>我构建高性能的后端服务。</h2>
@@ -532,12 +810,30 @@
                         <span>Docker · Linux · 规范协作</span>
                     </div>
                 </div>
+                <div class="terminal-card" aria-label="技术栈速览">
+                    <div class="terminal-bar">
+                        <div class="dots" aria-hidden="true">
+                            <span class="dot red"></span>
+                            <span class="dot yellow"></span>
+                            <span class="dot green"></span>
+                        </div>
+                        <div class="terminal-title">stack://hy-backend</div>
+                    </div>
+                    <div class="terminal-body">
+                        <div><span class="prompt">hy@starry</span>:~$ <span class="cmd">java -version</span></div>
+                        <div>OpenJDK · Spring Boot · Spring Cloud · MyBatis-Plus</div>
+                        <div><span class="prompt">hy@starry</span>:~$ <span class="cmd">docker ps</span><span class="cursor" aria-hidden="true"></span></div>
+                    </div>
+                </div>
             </div>
 
             <aside class="profile-card" aria-label="个人信息卡片">
                 <div class="profile-top">
-                    <div class="avatar-wrap" aria-hidden="true">
+                    <div class="avatar-shell" aria-hidden="true">
+                        <span class="avatar-orb" aria-hidden="true"></span>
+                        <div class="avatar-wrap" aria-hidden="true">
                         <img class="avatar" src="./image.png" alt="个人照片" loading="lazy" decoding="async" />
+                    </div>
                     </div>
                     <div class="profile-meta">
                         <h3>Java 开发工程师</h3>
@@ -547,7 +843,7 @@
                 <div class="profile-list">
                     <div class="profile-item"><span>邮箱</span><strong>hy@outlook.com</strong></div>
                     <div class="profile-item"><span>电话</span><strong>18836766782</strong></div>
-                    <div class="profile-item"><span>所在地</span><strong>郑州（可远程/可出差）</strong></div>
+                    <div class="profile-item"><span>所在地</span><strong>北京</strong></div>
                 </div>
             </aside>
         </section>
