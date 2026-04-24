@@ -286,12 +286,14 @@
             margin-bottom: 16px;
         }
         .avatar {
-            width: 54px;
-            height: 54px;
+            width: 56px;
+            height: 56px;
             border-radius: 18px;
-            background: linear-gradient(135deg, rgba(100, 255, 218, 0.25), rgba(122, 167, 255, 0.25));
-            border: 1px solid rgba(148, 163, 184, 0.20);
-            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.35);
+            border: 1px solid rgba(148, 163, 184, 0.22);
+            box-shadow: 0 18px 44px rgba(0, 0, 0, 0.40);
+            object-fit: cover;
+            object-position: center 20%;
+            background: rgba(148, 163, 184, 0.08);
         }
         .profile-meta h3 {
             font-size: 1.05rem;
@@ -449,7 +451,7 @@
 
             <aside class="profile-card" aria-label="个人信息卡片">
                 <div class="profile-top">
-                    <div class="avatar" aria-hidden="true"></div>
+                    <img class="avatar" src="./image.png" alt="个人照片" loading="lazy" decoding="async" />
                     <div class="profile-meta">
                         <h3>Java 开发工程师</h3>
                         <p>方向：微服务 · 性能优化 · 工程化</p>
