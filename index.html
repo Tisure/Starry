@@ -6,203 +6,546 @@
     <title>韩雨 | Java开发工程师</title>
     <style>
         :root {
-            --bg-color: #0a192f;
-            --text-main: #ccd6f6;
-            --text-secondary: #8892b0;
-            --accent-color: #64ffda;
-            --card-bg: #112240;
+            color-scheme: dark;
+
+            --bg: #071225;
+            --surface: rgba(17, 34, 64, 0.72);
+            --surface-2: rgba(17, 34, 64, 0.52);
+            --surface-border: rgba(148, 163, 184, 0.16);
+
+            --text: #d7e1ff;
+            --muted: rgba(215, 225, 255, 0.72);
+            --faint: rgba(215, 225, 255, 0.52);
+            --accent: #64ffda;
+            --accent-2: #7aa7ff;
+
+            --shadow: 0 14px 40px rgba(0, 0, 0, 0.45);
+            --radius: 14px;
+            --radius-sm: 10px;
+
+            --container: 1080px;
+            --nav-h: 76px;
         }
-        
+
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        
+
+        html { scroll-behavior: smooth; }
+
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-main);
-            line-height: 1.6;
+            font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "PingFang SC", "Microsoft YaHei", "Noto Sans SC", Arial, sans-serif;
+            background:
+                radial-gradient(900px 520px at 18% 10%, rgba(100, 255, 218, 0.14), transparent 60%),
+                radial-gradient(900px 520px at 78% 12%, rgba(122, 167, 255, 0.16), transparent 62%),
+                radial-gradient(760px 460px at 70% 78%, rgba(100, 255, 218, 0.08), transparent 62%),
+                linear-gradient(180deg, #071225 0%, #06101f 62%, #050c18 100%);
+            color: var(--text);
+            line-height: 1.7;
             overflow-x: hidden;
         }
+
+        a { color: inherit; }
+        a:focus-visible, button:focus-visible {
+            outline: 2px solid rgba(100, 255, 218, 0.85);
+            outline-offset: 3px;
+            border-radius: 10px;
+        }
+
+        ::selection { background: rgba(100, 255, 218, 0.22); }
+
+        .skip-link {
+            position: absolute;
+            left: 14px;
+            top: 10px;
+            transform: translateY(-140%);
+            padding: 10px 14px;
+            background: rgba(10, 20, 40, 0.92);
+            border: 1px solid var(--surface-border);
+            border-radius: 12px;
+            color: var(--text);
+            z-index: 3000;
+            transition: transform 0.25s ease;
+            text-decoration: none;
+        }
+        .skip-link:focus { transform: translateY(0); }
 
         /* 导航栏 */
         nav {
             position: fixed;
             top: 0; width: 100%;
-            padding: 20px 50px;
-            background: rgba(10, 25, 47, 0.9);
+            height: var(--nav-h);
+            padding: 0 28px;
+            background: rgba(7, 18, 37, 0.6);
             backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
             display: flex;
             justify-content: space-between;
             align-items: center;
             z-index: 1000;
+            border-bottom: 1px solid rgba(148, 163, 184, 0.12);
         }
-        nav .logo { color: var(--accent-color); font-size: 1.5rem; font-weight: bold; }
-        nav ul { display: flex; list-style: none; gap: 30px; }
-        nav a { color: var(--text-main); text-decoration: none; transition: color 0.3s; }
-        nav a:hover { color: var(--accent-color); }
+        nav .logo {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 750;
+            letter-spacing: 0.2px;
+        }
+        .logo-mark {
+            width: 30px; height: 30px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, rgba(100, 255, 218, 0.9), rgba(122, 167, 255, 0.9));
+            box-shadow: 0 12px 26px rgba(100, 255, 218, 0.12);
+        }
+        nav .logo span { color: var(--text); font-size: 1.05rem; }
+
+        nav ul { display: flex; list-style: none; gap: 18px; align-items: center; }
+        nav a {
+            color: var(--muted);
+            text-decoration: none;
+            padding: 10px 12px;
+            border-radius: 12px;
+            transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
+        }
+        nav a:hover {
+            color: var(--text);
+            background: rgba(148, 163, 184, 0.10);
+            transform: translateY(-1px);
+        }
+
+        .nav-cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 14px;
+            border: 1px solid rgba(100, 255, 218, 0.35);
+            color: rgba(100, 255, 218, 0.92);
+            background: rgba(100, 255, 218, 0.06);
+        }
+        .nav-cta:hover {
+            background: rgba(100, 255, 218, 0.10);
+            border-color: rgba(100, 255, 218, 0.5);
+        }
 
         /* 通用容器 */
-        .container { max-width: 1000px; margin: 0 auto; padding: 100px 20px; }
+        .container { max-width: var(--container); margin: 0 auto; padding: 96px 20px; }
+        .container:first-of-type { padding-top: calc(var(--nav-h) + 54px); }
+
+        main { position: relative; }
+
+        .section {
+            position: relative;
+        }
+        .section + .section {
+            padding-top: 10px;
+        }
+
+        .kicker {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.92rem;
+            color: rgba(100, 255, 218, 0.92);
+            letter-spacing: 0.3px;
+        }
+        .kicker::before {
+            content: "";
+            width: 12px;
+            height: 12px;
+            border-radius: 999px;
+            background: rgba(100, 255, 218, 0.9);
+            box-shadow: 0 12px 26px rgba(100, 255, 218, 0.10);
+        }
+
         .section-title {
-            font-size: 2rem; margin-bottom: 40px; display: flex; align-items: center;
+            font-size: 1.7rem;
+            margin-bottom: 22px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            letter-spacing: 0.2px;
         }
         .section-title::after {
-            content: ""; display: block; height: 1px; width: 300px;
-            background-color: #233554; margin-left: 20px;
+            content: "";
+            display: block;
+            height: 1px;
+            flex: 1;
+            background: linear-gradient(90deg, rgba(35, 53, 84, 0.9), transparent);
         }
 
         /* 头部介绍区 */
-        .hero { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; }
-        .hero h4 { color: var(--accent-color); font-weight: normal; margin-bottom: 20px; font-size: 1.1rem; }
-        .hero h1 { font-size: 4rem; color: #e6f1ff; margin-bottom: 10px; }
-        .hero h2 { font-size: 3rem; color: var(--text-secondary); margin-bottom: 30px; }
-        .hero p { max-width: 600px; color: var(--text-secondary); font-size: 1.1rem; margin-bottom: 40px; }
-        .btn {
-            display: inline-block; padding: 15px 30px; border: 1px solid var(--accent-color);
-            color: var(--accent-color); text-decoration: none; border-radius: 4px;
-            transition: all 0.3s;
+        .hero {
+            min-height: calc(100vh - var(--nav-h));
+            display: grid;
+            grid-template-columns: 1.25fr 0.75fr;
+            align-items: center;
+            gap: 26px;
         }
-        .btn:hover { background: rgba(100, 255, 218, 0.1); }
+        .hero h4 {
+            color: rgba(100, 255, 218, 0.92);
+            font-weight: 550;
+            margin-bottom: 16px;
+            font-size: 1rem;
+            letter-spacing: 0.2px;
+        }
+        .hero h1 {
+            font-size: clamp(2.6rem, 4.2vw, 4.1rem);
+            color: #eff4ff;
+            line-height: 1.08;
+            margin-bottom: 10px;
+            letter-spacing: -0.6px;
+        }
+        .hero h2 {
+            font-size: clamp(1.55rem, 3vw, 2.6rem);
+            color: var(--muted);
+            margin-bottom: 20px;
+            line-height: 1.15;
+            letter-spacing: -0.2px;
+        }
+        .hero p {
+            max-width: 640px;
+            color: var(--muted);
+            font-size: 1.05rem;
+            margin-bottom: 26px;
+        }
+
+        .actions {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 12px;
+            margin-top: 4px;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 12px 16px;
+            border: 1px solid rgba(148, 163, 184, 0.18);
+            color: var(--text);
+            background: rgba(148, 163, 184, 0.08);
+            text-decoration: none;
+            border-radius: 14px;
+            transition: transform 0.18s ease, background 0.18s ease, border-color 0.18s ease;
+            box-shadow: 0 10px 28px rgba(0, 0, 0, 0.22);
+        }
+        .btn:hover {
+            transform: translateY(-2px);
+            background: rgba(148, 163, 184, 0.12);
+            border-color: rgba(148, 163, 184, 0.26);
+        }
+        .btn-primary {
+            border-color: rgba(100, 255, 218, 0.40);
+            color: rgba(100, 255, 218, 0.95);
+            background: rgba(100, 255, 218, 0.07);
+        }
+        .btn-primary:hover {
+            background: rgba(100, 255, 218, 0.10);
+            border-color: rgba(100, 255, 218, 0.58);
+        }
+
+        .pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 12px;
+            border-radius: 999px;
+            background: rgba(148, 163, 184, 0.08);
+            border: 1px solid rgba(148, 163, 184, 0.14);
+            color: var(--muted);
+            text-decoration: none;
+            transition: background 0.18s ease, border-color 0.18s ease, transform 0.18s ease;
+        }
+        .pill:hover { transform: translateY(-1px); background: rgba(148, 163, 184, 0.12); border-color: rgba(148, 163, 184, 0.22); }
+
+        .profile-card {
+            border-radius: var(--radius);
+            background: linear-gradient(180deg, rgba(17, 34, 64, 0.70), rgba(17, 34, 64, 0.42));
+            border: 1px solid rgba(148, 163, 184, 0.16);
+            box-shadow: var(--shadow);
+            padding: 22px;
+            position: relative;
+            overflow: hidden;
+        }
+        .profile-card::before {
+            content: "";
+            position: absolute;
+            inset: -60px -40px auto auto;
+            width: 220px;
+            height: 220px;
+            border-radius: 999px;
+            background: radial-gradient(circle at 30% 30%, rgba(100, 255, 218, 0.22), transparent 62%);
+            filter: blur(0.2px);
+            pointer-events: none;
+        }
+        .profile-top {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 16px;
+        }
+        .avatar {
+            width: 54px;
+            height: 54px;
+            border-radius: 18px;
+            background: linear-gradient(135deg, rgba(100, 255, 218, 0.25), rgba(122, 167, 255, 0.25));
+            border: 1px solid rgba(148, 163, 184, 0.20);
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.35);
+        }
+        .profile-meta h3 {
+            font-size: 1.05rem;
+            letter-spacing: 0.1px;
+            color: #eff4ff;
+            margin-bottom: 2px;
+        }
+        .profile-meta p {
+            font-size: 0.92rem;
+            color: var(--muted);
+        }
+        .profile-list {
+            display: grid;
+            gap: 10px;
+            margin-top: 14px;
+        }
+        .profile-item {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 12px;
+            padding: 10px 12px;
+            background: rgba(148, 163, 184, 0.06);
+            border: 1px solid rgba(148, 163, 184, 0.12);
+            border-radius: 12px;
+        }
+        .profile-item span { color: var(--faint); font-size: 0.9rem; }
+        .profile-item strong { color: var(--text); font-weight: 650; font-size: 0.92rem; }
 
         /* 技能区 */
         .skills-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; }
         .skill-card {
-            background: var(--card-bg); padding: 25px; border-radius: 8px;
-            border: 1px solid transparent; transition: all 0.3s;
+            background: var(--surface);
+            padding: 22px;
+            border-radius: var(--radius);
+            border: 1px solid rgba(148, 163, 184, 0.14);
+            transition: transform 0.18s ease, border-color 0.18s ease, background 0.18s ease;
+            box-shadow: 0 10px 24px rgba(0,0,0,0.18);
         }
-        .skill-card:hover { border-color: var(--accent-color); transform: translateY(-5px); }
-        .skill-card h3 { color: var(--accent-color); margin-bottom: 15px; font-size: 1.2rem; }
-        .skill-card ul { list-style: none; color: var(--text-secondary); }
-        .skill-card ul li::before { content: "▹"; color: var(--accent-color); margin-right: 10px; }
+        .skill-card:hover { border-color: rgba(100, 255, 218, 0.40); transform: translateY(-4px); background: rgba(17, 34, 64, 0.80); }
+        .skill-card h3 { color: rgba(100, 255, 218, 0.92); margin-bottom: 12px; font-size: 1.05rem; letter-spacing: 0.2px; }
+        .skill-card ul { list-style: none; color: var(--muted); display: grid; gap: 8px; }
+        .skill-card ul li { display: flex; align-items: flex-start; gap: 10px; }
+        .skill-card ul li::before { content: "▹"; color: rgba(100, 255, 218, 0.92); margin-top: 1px; }
 
         /* 经历区 */
-        .job { margin-bottom: 40px; border-left: 2px solid #233554; padding-left: 20px; position: relative; }
+        .job {
+            margin-bottom: 22px;
+            border-left: 2px solid rgba(35, 53, 84, 0.9);
+            padding-left: 18px;
+            position: relative;
+        }
         .job::before {
             content: ""; position: absolute; left: -6px; top: 0; width: 10px; height: 10px;
-            background: var(--accent-color); border-radius: 50%;
+            background: rgba(100, 255, 218, 0.92); border-radius: 50%;
+            box-shadow: 0 10px 22px rgba(100, 255, 218, 0.12);
         }
         .job h3 { font-size: 1.4rem; color: #e6f1ff; }
-        .job span { color: var(--accent-color); font-size: 0.9rem; display: block; margin: 5px 0 15px; }
-        .job p { color: var(--text-secondary); margin-bottom: 10px; font-size: 0.95rem;}
+        .job span { color: rgba(100, 255, 218, 0.92); font-size: 0.9rem; display: block; margin: 6px 0 12px; }
+        .job p { color: var(--muted); margin-bottom: 8px; font-size: 0.98rem;}
 
         /* 项目区 */
-        .projects-grid { display: grid; grid-template-columns: 1fr; gap: 30px; }
-        .project-card { background: var(--card-bg); padding: 30px; border-radius: 8px; position: relative;}
-        .project-card h3 { color: #e6f1ff; font-size: 1.5rem; margin-bottom: 15px; }
-        .project-card p { color: var(--text-secondary); margin-bottom: 20px; }
-        .tech-stack { display: flex; flex-wrap: wrap; gap: 15px; font-size: 0.85rem; color: var(--accent-color); font-family: monospace; }
+        .projects-grid { display: grid; grid-template-columns: 1fr; gap: 18px; }
+        .project-card {
+            background: linear-gradient(180deg, rgba(17, 34, 64, 0.70), rgba(17, 34, 64, 0.42));
+            padding: 22px;
+            border-radius: var(--radius);
+            position: relative;
+            border: 1px solid rgba(148, 163, 184, 0.14);
+            box-shadow: 0 10px 26px rgba(0,0,0,0.20);
+            transition: transform 0.18s ease, border-color 0.18s ease;
+        }
+        .project-card:hover { transform: translateY(-4px); border-color: rgba(122, 167, 255, 0.32); }
+        .project-card h3 { color: #eff4ff; font-size: 1.25rem; margin-bottom: 10px; letter-spacing: -0.2px; }
+        .project-card p { color: var(--muted); margin-bottom: 14px; }
+        .tech-stack {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            font-size: 0.84rem;
+            color: rgba(100, 255, 218, 0.92);
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+        }
+        .tech-stack span {
+            padding: 6px 10px;
+            border-radius: 999px;
+            border: 1px solid rgba(100, 255, 218, 0.22);
+            background: rgba(100, 255, 218, 0.06);
+        }
 
         /* 底部 */
-        footer { text-align: center; padding: 30px; color: var(--text-secondary); font-family: monospace; }
+        footer {
+            text-align: center;
+            padding: 26px 18px 44px;
+            color: var(--faint);
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+        }
+        footer p { margin-top: 8px; }
 
         /* 动画 */
         @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
         .fade-in { animation: fadeIn 1s ease forwards; }
+
+        @media (max-width: 900px) {
+            nav { padding: 0 16px; }
+            .hero { grid-template-columns: 1fr; }
+            .profile-card { order: 3; }
+            .section-title::after { display: none; }
+        }
+
+        @media (max-width: 560px) {
+            nav ul { gap: 6px; }
+            nav a { padding: 10px 10px; }
+            .nav-cta { display: none; }
+            .container { padding: 84px 16px; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            html { scroll-behavior: auto; }
+            .fade-in { animation: none; }
+            .btn, nav a, .skill-card, .project-card { transition: none; }
+        }
     </style>
 </head>
 <body>
 
+    <a class="skip-link" href="#main">跳到主要内容</a>
     <nav>
-        <div class="logo">Starry.</div>
+        <div class="logo">
+            <div class="logo-mark" aria-hidden="true"></div>
+            <span>Starry</span>
+        </div>
         <ul>
-            <li><a href=" ">关于我</a ></li>
-            <li><a href="#skills">专业技能</a ></li>
-            <li><a href="#experience">工作经历</a ></li>
-            <li><a href="#projects">项目经验</a ></li>
+            <li><a href="#about">关于我</a></li>
+            <li><a href="#skills">专业技能</a></li>
+            <li><a href="#experience">工作经历</a></li>
+            <li><a href="#projects">项目经验</a></li>
+            <li><a class="nav-cta" href="mailto:hy@outlook.com">联系我</a></li>
         </ul>
     </nav>
 
-    <div class="container hero fade-in">
-        <h4>你好，我是</h4>
-        <h1>韩雨.</h1>
-        <h2>我构建高性能的后端服务。</h2>
-        <p>我是一名拥有扎实基础的 Java 开发工程师。擅长构建从单体到微服务架构的复杂业务系统，热衷于探索 AI 辅助编程的无限可能，致力于通过优雅的代码解决实际业务痛点。</p >
-        <div>
-            <a href="mailto:hy@outlook.com" class="btn">联系我：hy@outlook.com</a >
-        </div>
-    </div>
-
-    <div class="container" id="about">
-        <h2 class="section-title">自我评价</h2>
-        <p style="color: var(--text-secondary); font-size: 1.1rem; max-width: 800px;">
-            我具备独立解决问题的能力，代码规范意识较强，同时沟通和学习能力良好，能快速融入团队并完成工作任务。我个人极度热衷于 AI 方向研究，拥有自己的 Gemini Pro 订阅，并熟练使用 Cursor 等国内外主流 AI 辅助编程工具。
-        </p >
-    </div>
-
-    <div class="container" id="skills">
-        <h2 class="section-title">专业技能</h2>
-        <div class="skills-grid">
-            <div class="skill-card">
-                <h3>后端开发生态</h3>
-                <ul>
-                    <li>JavaSE / JavaEE 核心技术</li>
-                    <li>Spring Boot / Spring MVC</li>
-                    <li>Spring Cloud Alibaba 微服务</li>
-                    <li>MyBatis / MyBatis-Plus</li>
-                </ul>
-            </div>
-            <div class="skill-card">
-                <h3>中间件与数据存储</h3>
-                <ul>
-                    <li>MySQL / SQL性能优化</li>
-                    <li>Redis 持久化机制 (RDB/AOF)</li>
-                    <li>RabbitMQ 消息队列应用</li>
-                    <li>阿里 OSS / FastDFS 文件处理</li>
-                </ul>
-            </div>
-            <div class="skill-card">
-                <h3>DevOps & AI 前沿</h3>
-                <ul>
-                    <li>Docker 容器化部署与管理</li>
-                    <li>Linux 系统级操作</li>
-                    <li>Gemini Pro / Cursor AI 编程</li>
-                    <li>Vue / Node.js 全栈协作开发</li>
-                </ul>
-            </div>
-        </div>
-    </div>
-
-    <div class="container" id="experience">
-        <h2 class="section-title">实习经历</h2>
-        <div class="job">
-            <h3>Java开发工程师 @ 郑州软语科技有限公司</h3>
-            <span>2025/07 - 2025/10</span>
-            <p>▹ 深度参与项目需求分析，编写概要设计及详细设计文档，完成部分数据库设计。</p >
-            <p>▹ 承担核心业务模块代码编写与重构，对接测试反馈快速定位并修复系统 BUG。</p >
-            <p>▹ 配合项目经理推进项目上线流程，并完善相关技术文档归档。</p >
-        </div>
-    </div>
-
-    <div class="container" id="projects">
-        <h2 class="section-title">精选项目</h2>
-        <div class="projects-grid">
-            <div class="project-card">
-                <h3>农银惠民通农业保险管理系统</h3>
-                <p>该项目是农业银行面向全国农户打造的普惠金融微服务平台。针对保单审批周期长、跨部门协同低效等痛点，构建了一体化数字解决方案。基于 Spring Cloud 的微服务架构，主导用户中心、保单管理核心模块；引入 JWT+拦截器 实现动态权限管控；运用 AOP 切面实现保单全生命周期操作溯源。</p >
-                <div class="tech-stack">
-                    <span>Spring Cloud</span> <span>Redis</span> <span>RabbitMQ</span> <span>Nacos</span> <span>AOP</span>
+    <main id="main">
+        <section class="container hero fade-in section" aria-label="主页介绍">
+            <div>
+                <div class="kicker">你好，我是</div>
+                <h1>韩雨</h1>
+                <h2>我构建高性能的后端服务。</h2>
+                <p>我是一名拥有扎实基础的 Java 开发工程师。擅长构建从单体到微服务架构的复杂业务系统，热衷于探索 AI 辅助编程的无限可能，致力于通过优雅的代码解决实际业务痛点。</p>
+                <div class="actions">
+                    <a href="mailto:hy@outlook.com" class="btn btn-primary">联系我</a>
+                    <a href="#projects" class="btn">查看项目</a>
+                    <a class="pill" href="#skills">Java / Spring 方向</a>
                 </div>
             </div>
-            <div class="project-card">
-                <h3>松果心理咨询系统</h3>
-                <p>聚焦企业协同管理与数据化运营痛点。采用前后端分离架构，负责全链路开发。后端整合 MyBatis-Plus 与 JWT 鉴权机制；结合 Redis 实现高并发场景下的验证码缓存与安全控制。主导了资源管理、任务协作等模块的闭环开发，并提供 Swagger 标准化接口支撑前端交互。</p >
-                <div class="tech-stack">
-                    <span>Spring Boot</span> <span>JWT</span> <span>MySQL</span> <span>Vue.js</span>
-                </div>
-            </div>
-            <div class="project-card">
-                <h3>智慧宠物健康与社交平台</h3>
-                <p>基于 Spring Boot 架构打造的现代化宠物生态服务系统。该项目作为个人创新实践，不仅打通了用户社交与健康数据追踪的业务流转，也充分印证了独立完成系统级架构规划、数据建模与完整业务链条开发的能力。</p >
-                <div class="tech-stack">
-                    <span>Java</span> <span>Spring Boot</span> <span>独立开发</span>
-                </div>
-            </div>
-        </div>
-    </div>
 
-    <footer>
-        <p>Designed & Built by 韩雨</p >
-        <p>18836766782</p >
-    </footer>
+            <aside class="profile-card" aria-label="个人信息卡片">
+                <div class="profile-top">
+                    <div class="avatar" aria-hidden="true"></div>
+                    <div class="profile-meta">
+                        <h3>Java 开发工程师</h3>
+                        <p>方向：微服务 · 性能优化 · 工程化</p>
+                    </div>
+                </div>
+                <div class="profile-list">
+                    <div class="profile-item"><span>邮箱</span><strong>hy@outlook.com</strong></div>
+                    <div class="profile-item"><span>电话</span><strong>18836766782</strong></div>
+                    <div class="profile-item"><span>所在地</span><strong>郑州（可远程/可出差）</strong></div>
+                </div>
+            </aside>
+        </section>
+
+        <section class="container section" id="about">
+            <h2 class="section-title">自我评价</h2>
+            <p style="color: var(--muted); font-size: 1.06rem; max-width: 860px;">
+                我具备独立解决问题的能力，代码规范意识较强，同时沟通和学习能力良好，能快速融入团队并完成工作任务。我个人极度热衷于 AI 方向研究，拥有自己的 Gemini Pro 订阅，并熟练使用 Cursor 等国内外主流 AI 辅助编程工具。
+            </p>
+        </section>
+
+        <section class="container section" id="skills">
+            <h2 class="section-title">专业技能</h2>
+            <div class="skills-grid">
+                <div class="skill-card">
+                    <h3>后端开发生态</h3>
+                    <ul>
+                        <li>JavaSE / JavaEE 核心技术</li>
+                        <li>Spring Boot / Spring MVC</li>
+                        <li>Spring Cloud Alibaba 微服务</li>
+                        <li>MyBatis / MyBatis-Plus</li>
+                    </ul>
+                </div>
+                <div class="skill-card">
+                    <h3>中间件与数据存储</h3>
+                    <ul>
+                        <li>MySQL / SQL性能优化</li>
+                        <li>Redis 持久化机制 (RDB/AOF)</li>
+                        <li>RabbitMQ 消息队列应用</li>
+                        <li>阿里 OSS / FastDFS 文件处理</li>
+                    </ul>
+                </div>
+                <div class="skill-card">
+                    <h3>DevOps & AI 前沿</h3>
+                    <ul>
+                        <li>Docker 容器化部署与管理</li>
+                        <li>Linux 系统级操作</li>
+                        <li>Gemini Pro / Cursor AI 编程</li>
+                        <li>Vue / Node.js 全栈协作开发</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section class="container section" id="experience">
+            <h2 class="section-title">实习经历</h2>
+            <div class="job">
+                <h3>Java开发工程师 @ 郑州软语科技有限公司</h3>
+                <span>2025/07 - 2025/10</span>
+                <p>▹ 深度参与项目需求分析，编写概要设计及详细设计文档，完成部分数据库设计。</p>
+                <p>▹ 承担核心业务模块代码编写与重构，对接测试反馈快速定位并修复系统 BUG。</p>
+                <p>▹ 配合项目经理推进项目上线流程，并完善相关技术文档归档。</p>
+            </div>
+        </section>
+
+        <section class="container section" id="projects">
+            <h2 class="section-title">精选项目</h2>
+            <div class="projects-grid">
+                <div class="project-card">
+                    <h3>农银惠民通农业保险管理系统</h3>
+                    <p>该项目是农业银行面向全国农户打造的普惠金融微服务平台。针对保单审批周期长、跨部门协同低效等痛点，构建了一体化数字解决方案。基于 Spring Cloud 的微服务架构，主导用户中心、保单管理核心模块；引入 JWT+拦截器 实现动态权限管控；运用 AOP 切面实现保单全生命周期操作溯源。</p>
+                    <div class="tech-stack">
+                        <span>Spring Cloud</span> <span>Redis</span> <span>RabbitMQ</span> <span>Nacos</span> <span>AOP</span>
+                    </div>
+                </div>
+                <div class="project-card">
+                    <h3>松果心理咨询系统</h3>
+                    <p>聚焦企业协同管理与数据化运营痛点。采用前后端分离架构，负责全链路开发。后端整合 MyBatis-Plus 与 JWT 鉴权机制；结合 Redis 实现高并发场景下的验证码缓存与安全控制。主导了资源管理、任务协作等模块的闭环开发，并提供 Swagger 标准化接口支撑前端交互。</p>
+                    <div class="tech-stack">
+                        <span>Spring Boot</span> <span>JWT</span> <span>MySQL</span> <span>Vue.js</span>
+                    </div>
+                </div>
+                <div class="project-card">
+                    <h3>智慧宠物健康与社交平台</h3>
+                    <p>基于 Spring Boot 架构打造的现代化宠物生态服务系统。该项目作为个人创新实践，不仅打通了用户社交与健康数据追踪的业务流转，也充分印证了独立完成系统级架构规划、数据建模与完整业务链条开发的能力。</p>
+                    <div class="tech-stack">
+                        <span>Java</span> <span>Spring Boot</span> <span>独立开发</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <footer>
+            <p>Designed & Built by 韩雨</p>
+            <p>18836766782</p>
+        </footer>
+    </main>
 
 </body>
 </html>
